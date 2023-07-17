@@ -1,15 +1,15 @@
 clear
-% add optim_fun.m in the current path
+% add optim_fun.m in the 'control_energy' path
 addpath '/control_energy'
 addpath '/utils'
 
 % load structural connectome and demo data
 
-% A_subn = group_structural_connectome
+% A_subn = indivdiual_structural_connectome
 [node_num,~,sub_num] = size(A_subn); 
 
 
-%% optim
+%% calculate optim control energy to activate the target network from baseline brain state
 % load network_state 
 
 net_num = size(network_name,1);
@@ -19,7 +19,7 @@ for n = 1:sub_num
 end
 
 
-%% term vs preterm analysis
+%% compare the energy consumption between preterm and term infant group
 
 % whole-brain level
 [h,p,~,stst] = ttest2(mean(control_energy_term(:,network_num,:)),mean(control_energy_preterm2(:,network_num,:)));

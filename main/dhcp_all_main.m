@@ -11,7 +11,7 @@ addpath '/utils'
 
 A = A_subn(:,:,1)
 
-%% controllability
+%% calculate average and modal controllability for each subject
 aver_cons = zeros(node_num,sub_num);
 
 for s = 1:sub_num
@@ -23,7 +23,9 @@ modal_cons = zeros(node_num,sub_num);
 for s = 1:sub_num
     modal_cons(:,s) = modal_control(A_subn(:,:,s));
 end
-%% aver vs modal
+
+
+%% compare average controllability vs modal controllability
 
 % across subjects
 [rs,ps] = corr(mean(aver_cons)',mean(modal_cons)')
@@ -31,15 +33,15 @@ end
 [rr,pr] = corr(mean(aver_cons,2),mean(modal_cons,2))
 
 
-%% control for sex, brain volume, 
+%% regress sex, brain volume, and head motion from individual average/modal controllability 
 
 demos = [sex volume motion];
 
 aver_cons_cont = regress_demos_node(aver_cons,demos);
 modal_cons_cont = regress_demos_node(modal_cons,demos);
-node_degree_cont = regress_demos_node(node_degree,demos);
 
-%% whole-brain controllability ~ age (PMA/GA)
+%% development of controllability with age on different levels
+% whole-brain controllability ~ age (PMA/GA)
 
 [r_avercons_ga,p_avercons_ga] = corr(mean(aver_cons_cont)',ga);
 [r_avercons_pma,p_avercons_pma] = corr(mean(aver_cons_cont)',pma);
